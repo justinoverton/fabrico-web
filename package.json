@@ -1,0 +1,34 @@
+{
+  "name": "fabrico-web",
+  "version": "1.0.0",
+  "description": "Web site for fabrico",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justinoverton/fabrico-web.git"
+  },
+  "keywords": [
+    "fabrico",
+    "procedural",
+    "generation",
+    "random",
+    "rpg",
+    "game"
+  ],
+  "author": "Justin Overton (polymath.ninja)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/justinoverton/fabrico-web/issues"
+  },
+  "homepage": "https://github.com/justinoverton/fabrico-web#readme",
+  "dependencies": {
+    "binheap": "^1.0.0",
+    "bootstrap": "^3.3.6",
+    "fabrico": "^1.1.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^0.6.1",
+    "load-grunt-tasks": "^3.5.2",
+    "grunt-browserify": "^3.8.0"
+  }
+}

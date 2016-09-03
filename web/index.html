@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title>Fabrico</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="js/app.js"></script>
+    
+    <script>
+      /*global app*/
+      var fab = app.fabrico;
+      var fantasy = app.fantasy;
+      
+    </script>
+  </head>
+  <body>
+    
+    <canvas id="map" width="200" height="1000"></canvas>
+    
+    <script>
+      /*global app*/
+      /*global Image*/
+      var canvas = document.getElementById('map');
+      var ctx = canvas.getContext('2d');
+      var image = new Image();
+      
+      function setPixel(data, i, r, g, b, a) {
+        data[i] = r;
+        data[i+1] = g;
+        data[i+2] = b;
+        data[i+3] = a;
+      }
+      
+      image.onload = function() {
+        ctx.drawImage(this, 0, 0);
+        let imgD = ctx.getImageData(0, 0, 200, 200);
+        
+        let map = new app.maps.terrainMap(imgD.data, 200, 200);
+        let builder = app.maps.city.builder(map);
+        app.maps.city.seedPopulation(builder);
+        
+        let elevation = ctx.createImageData(imgD);
+        let vegitation = ctx.createImageData(imgD);
+        let water = ctx.createImageData(imgD);
+        let other = ctx.createImageData(imgD);
+        
+        for(let y=0; y<200; y++) {
+          for(let x=0; x<200; x++) {
+            
+            let i = y * 200 + x;
+            i *= 4;
+            
+            let node = builder.getNode(x, y); 
+            let r = node.height;
+            let g = node.vegitation;
+            let b = node.water;
+            
+            setPixel(elevation.data, i, r, r, r, 255);
+            setPixel(vegitation.data, i, 0, 255, 0, g);
+            setPixel(water.data, i, 0, 0, 255, b);
+            
+            
+            if(node.population > 0)
+              setPixel(other.data, i, node.population, g, b, 255);
+            else
+              setPixel(other.data, i, 0, g, b, 255-r);
+          }
+        }
+        
+        ctx.putImageData(elevation, 0, 200);
+        ctx.putImageData(vegitation, 0, 400);
+        ctx.putImageData(water, 0, 600);
+        
+        ctx.putImageData(other, 0, 800);
+      };
+      
+      image.src = 'data:image/png;base64,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';
+      
+    </script>
+  </body>
+</html>
